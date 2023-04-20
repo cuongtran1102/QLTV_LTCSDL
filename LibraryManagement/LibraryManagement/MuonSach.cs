@@ -22,6 +22,9 @@ namespace LibraryManagement
 
         private void MuonSach_Load(object sender, EventArgs e)
         {
+            dgSachMuon.AllowUserToAddRows = false;
+            dgDocGia.AllowUserToAddRows=false;
+            dgSach.AllowUserToDeleteRows=false;
             dgSach.DataSource = new SachBUS().ListSachMuon();
             dgDocGia.DataSource = new DocGiaBUS().DocGiaList();
             rdMaDocGia.Checked = true;
@@ -98,26 +101,45 @@ namespace LibraryManagement
 
         private void btnXoa_Click(object sender, EventArgs e)
         {
-            try
+            if (dgSachMuon.RowCount == 0)
+                MessageBox.Show("Chưa có sách trong danh sách mượn");
+            //else if (dgSachMuon.SelectedRows.Count <= 0)
+            //    MessageBox.Show("Hãy chọn sách cần xóa khỏi danh sách mượn");
+            else
             {
                 DataGridViewRow row = dgSachMuon.SelectedRows[0];
                 dgSachMuon.Rows.Remove(row);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
             }
         }
 
         private void btnLapPhieu_Click(object sender, EventArgs e)
         {
-            phieumuonbus.LapPhieuMuon(DateTime.Now, lblMaDocGia.Text);
-            int lastid = phieumuonbus.LayIDPhieuMuonLonNhat();
-            foreach (DataGridViewRow r in dgSachMuon.Rows)
+            if (lblMaDocGia.Text.Equals(""))
+                MessageBox.Show("Hãy chọn độc giả cần mượn sách");
+            else if (dgSachMuon.RowCount == 0)
+                MessageBox.Show("Chưa có sách trong danh sách mượn");
+            else
             {
-                phieumuonbus.LapCTPM(r.Cells["MaSach"].Value.ToString(), 1, lastid, (decimal)r.Cells["GiaNhap"].Value);
-                //phieumuonbus.SetSoLuongSachTrongCTPM(r.Cells["MaSach"].Value.ToString(), (int)r.Cells["SoLuong"].Value);
+                phieumuonbus.LapPhieuMuon(DateTime.Now, lblMaDocGia.Text);
+                int lastid = phieumuonbus.LayIDPhieuMuonLonNhat();
+                foreach (DataGridViewRow r in dgSachMuon.Rows)
+                {
+                    phieumuonbus.LapCTPM(r.Cells["MaSach"].Value.ToString(), 1, lastid, decimal.Parse(r.Cells["GiaNhap"].Value.ToString()));
+                    phieumuonbus.SetSoLuongSachTrongCTPM(r.Cells["MaSach"].Value.ToString(), int.Parse(r.Cells["SoLuong"].Value.ToString()));
+
+                }
+                dgDocGia.ClearSelection();
+                ClearInforDocGia();
+                dgSachMuon.Rows.Clear();
+                dgSach.DataSource = new SachBUS().ListSachMuon();
             }
+        }
+        public void ClearInforDocGia()
+        {
+            lblMaDocGia.Text = "";
+            lblNgaySinh.Text = "";
+            lblSoDT.Text = "";
+            lblTenDocGia.Text = "";
         }
     }
 }
