@@ -1,5 +1,6 @@
 ﻿using QLTV.DTO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -59,5 +60,50 @@ namespace QLTV.DAO
                 return maxid;
             }
         }
+        public IEnumerable LoadPhieuMuon()
+        {
+            using(var db = new QLTVEntities())
+            {
+                var query = db.PhieuMuons.Select(pm => new
+                {
+                    pm.MaPM,
+                    pm.NgayLapPhieu,
+                    pm.MaDocGia
+                }).Where(pm => db.HoaDonTraSaches.All(h => h.MaPM != pm.MaPM));
+                return query.ToList();
+            }
+        }
+        public IEnumerable LoadPMByIDDG(string id)
+        {
+            using (var db = new QLTVEntities())
+            {
+                var query = db.PhieuMuons.Select(pm => new
+                {
+                    pm.MaPM,
+                    pm.NgayLapPhieu,
+                    pm.MaDocGia
+                }).Where(p => p.MaDocGia.ToLower().Contains(id.ToLower()) ||
+                p.MaDocGia.ToLower().StartsWith(id.ToLower()) ||
+                p.MaDocGia.ToLower().EndsWith(id.ToLower()));
+                return query.ToList();
+            }
+        }
+        public DocGia LoadDocGiaByIDPM(string id)
+        {
+            using (var db = new QLTVEntities())
+            {
+                var query = db.DocGias.ToList().Where(dg => dg.MaDocGia == id).First();
+                return query;
+            }
+        }
+        //public int SoLuongSachTrongCTPM(int id)
+        //{
+
+        //}
+
+        //public decimal TongTienDatCoc(int id)
+        //{
+
+        //}
     }
 }
