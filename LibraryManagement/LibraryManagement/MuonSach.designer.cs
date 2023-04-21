@@ -300,6 +300,7 @@
             this.btnHuy.TabIndex = 9;
             this.btnHuy.Text = "Hủy";
             this.btnHuy.UseVisualStyleBackColor = true;
+            this.btnHuy.Click += new System.EventHandler(this.btnHuy_Click);
             // 
             // btnLapPhieu
             // 
@@ -419,7 +420,7 @@
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
             this.Name = "MuonSach";
-            this.Text = "MuonSach";
+            this.Text = "Mượn Sách";
             this.Load += new System.EventHandler(this.MuonSach_Load);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgSachMuon)).EndInit();

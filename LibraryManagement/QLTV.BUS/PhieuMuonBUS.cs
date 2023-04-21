@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,6 +34,18 @@ namespace QLTV.BUS
         public int LayIDPhieuMuonLonNhat()
         {
             return new PhieuMuonDAO().layIDPhieuMuonLonNhat();
+        }
+        public IEnumerable LoadPhieuMuon()
+        {
+            return new PhieuMuonDAO().LoadPhieuMuon();
+        }
+        public IEnumerable LoadPhieuMuonByIDDG(string id)
+        {
+            return new PhieuMuonDAO().LoadPMByIDDG(id);
+        }
+        public DocGia LoadDocGiaByIDPM(string id)
+        {
+            return new PhieuMuonDAO().LoadDocGiaByIDPM(id);
         }
     }
 }

@@ -128,6 +128,7 @@ namespace LibraryManagement
                     phieumuonbus.SetSoLuongSachTrongCTPM(r.Cells["MaSach"].Value.ToString(), int.Parse(r.Cells["SoLuong"].Value.ToString()));
 
                 }
+                MessageBox.Show("Lập phiếu mượn thành công");
                 dgDocGia.ClearSelection();
                 ClearInforDocGia();
                 dgSachMuon.Rows.Clear();
@@ -140,6 +141,13 @@ namespace LibraryManagement
             lblNgaySinh.Text = "";
             lblSoDT.Text = "";
             lblTenDocGia.Text = "";
+        }
+
+        private void btnHuy_Click(object sender, EventArgs e)
+        {
+            ClearInforDocGia();
+            dgDocGia.ClearSelection();
+            dgSachMuon.Rows.Clear();
         }
     }
 }
